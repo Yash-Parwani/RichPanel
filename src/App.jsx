@@ -5,6 +5,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import { login, logout, selectUser, setSubscription } from "./features/userSlice";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import Home from "./components/Home";
 const App = () => {
   //fetching the user stored in the redux using useSelector
   const user = useSelector(selectUser);
@@ -32,9 +34,25 @@ const App = () => {
   },[dispatch])
 
   return (
-     <div className="bg-blue-700">
-      <Register/>
-     </div>
+    <Router>
+    {
+      /*if user is not logged in than show login screen only 
+    otherwise we can show rest of all the screen like home screen ,etc */
+      !user ? (
+        <Register/>
+      ) : (
+       
+
+      
+        <Home/>
+
+
+
+
+
+      )
+    }
+  </Router>
   )
 }
 
