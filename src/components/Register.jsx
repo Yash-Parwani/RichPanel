@@ -1,5 +1,23 @@
-
+import { useRef } from "react";
+import { auth } from "../firebase";
+import {createUserWithEmailAndPassword} from 'firebase/auth'
 const Register = () => {
+    const emailRef = useRef(null);
+    const passwordRef = useRef(null);
+    
+    const register = (e) =>{
+           e.preventDefault();
+           createUserWithEmailAndPassword(
+              auth,
+              emailRef.current.value,
+              passwordRef.current.value
+           ).then((authUser)=>{
+             
+           }).catch((error) =>{
+            alert(error.message);
+           })
+    }
+
     return (
         <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
             <div className="w-2/6 p-6 m-auto bg-white rounded-md shadow-xl shadow-black-600/40  lg:max-w-xl">
@@ -30,6 +48,7 @@ const Register = () => {
                             type="email"
                             className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
                             id="email"
+                            ref={emailRef}
                         />
                     </div>
                     <div className="mb-2">
@@ -43,11 +62,15 @@ const Register = () => {
                             type="password"
                             className="block w-full px-4 py-2 mt-2 text-gray-600 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
                             id="password"
+                            ref={passwordRef}
                         />
                     </div>
                     
                     <div className="mt-6">
-                        <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-600 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-purple-600">
+                        <button 
+                        className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-600 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+                         onClick={register}  
+                        >
                             Sign Up
                         </button>
                     </div>
