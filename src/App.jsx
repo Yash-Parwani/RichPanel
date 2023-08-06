@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect,  } from "react"
 import { Login, Register } from "./components"
 import db, { auth } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
@@ -6,7 +6,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import { login, logout, selectUser, setSubscription } from "./features/userSlice";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import Home from "./components/Home";
+
 import ProfileScreen from "./components/ProfileScreen";
 const App = () => {
   //fetching the user stored in the redux using useSelector

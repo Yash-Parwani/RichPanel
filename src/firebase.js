@@ -10,12 +10,12 @@ import {
 } from 'firebase/auth'
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCiu1HY4F5ZhwhfTvQpoVOXL5txncpmM_Y",
-  authDomain: "richpanel-b13ad.firebaseapp.com",
-  projectId: "richpanel-b13ad",
-  storageBucket: "richpanel-b13ad.appspot.com",
-  messagingSenderId: "694875130179",
-  appId: "1:694875130179:web:250e21680b9ea5267607f6"
+  apiKey: `${import.meta.env.VITE_APP_FIREBASE_KEY}`,
+  authDomain: `${ import.meta.env.VITE_APP_AUTH_DOMAIN}`,
+  projectId: `${import.meta.env.VITE_APP_PROJECT_ID}`,
+  storageBucket: `${import.meta.env.VITE_APP_STORAGE_BUCKET}`,
+  messagingSenderId: `${import.meta.env.VITE_APP_MESSAGING_SENDER_ID}`,
+  appId: `${import.meta.env.VITE_APP_APP_ID}`
 };
 
 initializeApp(firebaseConfig) // v9 way to initialze firebase to use all functionalities

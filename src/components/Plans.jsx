@@ -8,6 +8,7 @@ import { selectUser } from '../features/userSlice';
 import {loadStripe} from '@stripe/stripe-js'
 
 
+
 function PlanScreen() {
     //storing all the products
     const [products, setProducts] = useState([])
@@ -72,6 +73,7 @@ function PlanScreen() {
         })
     },[]);//fetching data only once from db since data wont change for every user
  
+ 
 
     const loadCheckout = async (priceId)=>{
       
@@ -101,13 +103,17 @@ function PlanScreen() {
             //We have a session, lets redirect to Checkout
             //Init stripe
 
-            const stripe = await loadStripe("pk_test_51NbvbvSBbRjyQ3wMc28nhLut9skUU8mO3d1OkaAqBq4lKBsXRuNA3gCrKoZqNjkV9BB4aFAu6MQuGro6ZXjFXTG100LF0PH1BJ")
+            const stripe = await loadStripe(`${import.meta.env.VITE_STRIPE_PUBLIC_KEY}`)
             stripe.redirectToCheckout({sessionId});
             }
           });
 
     }
 
+    const customerPortal = () => {
+      window.location.replace(`https://billing.stripe.com/p/login/test_3cs9BK0fVbu3cEw000?prefilled_email=${user.email}`);
+    };
+   
   return (
     <div className='planScreen'>
    {/* render the renewal date only if subscribed */}
@@ -123,7 +129,7 @@ function PlanScreen() {
  
  
  */}
-
+ 
   {
     Object.entries(products).map(([productId,productData]) =>{
       //TODO add some logic to check if the users subscription is active
@@ -131,7 +137,8 @@ function PlanScreen() {
       const isCurrentPackage = productData.name
       ?.toLowerCase()
       .includes(subscription?.role);
-      console.log(subscription?.role);
+    
+     
      
     
       return (
@@ -139,14 +146,25 @@ function PlanScreen() {
           <div >
             <h5 className='pb-4'>{productData.name}</h5>
             <h6>{productData.description}</h6>
+            
           </div>
-
+          
+           
           {/* trigger the loadcheckOut only for buttons that are not subscribed, for Currently Subscribed we should not loadCheckout since person has already bought it */}
-          <button onClick={()=>
-            !isCurrentPackage && loadCheckout(productData.prices.priceId)} 
-            className={`${isCurrentPackage && 'bg-gray-900'} bg-[#e50914] text-white cursor-pointer pt-[10px] pb-[10px] pl-[20px] pr-[20px]`}>
-            {isCurrentPackage ? 'Currently Subscribed' : 'Subscribe'}
-          </button>
+          {  
+            !isCurrentPackage &&<button onClick={()=>loadCheckout(productData.prices.priceId)}
+            className={`${isCurrentPackage && 'bg-gray-900'} bg-[#e50914] text-white cursor-pointer pt-[10px] pb-[10px] pl-[20px] pr-[20px]`} >
+               Subscribe
+            </button>
+          }
+          {console.log(productData)}
+          {
+            isCurrentPackage && <button
+            onClick={customerPortal}
+            className={ 'bg-gray-700 text-white'}  
+               target="_blank">{subscription?.role == 'premium' ? "Manage Subscription" : "Wanna Upgrade ?"}
+        </button>
+          }
 
 
         </div>
