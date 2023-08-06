@@ -16,10 +16,11 @@ function PlanScreen() {
 
     useEffect(()=>{
       const colRef = collection(db,`customers/${user.uid}/subscriptions`);
-
+      
       getDocs(colRef)
       .then((querySnapshot)=>{
         querySnapshot.forEach(async (subs) =>{
+          
            setSubscription({
             role: subs.data().role,
             current_period_end:subs.data().current_period_end.seconds,
@@ -70,7 +71,7 @@ function PlanScreen() {
           alert(error.message);
         })
     },[]);//fetching data only once from db since data wont change for every user
-    console.log(products)
+ 
 
     const loadCheckout = async (priceId)=>{
       
@@ -100,7 +101,7 @@ function PlanScreen() {
             //We have a session, lets redirect to Checkout
             //Init stripe
 
-            const stripe = await loadStripe(`${import.meta.env.REACT_APP_STRIPE_PUBLIC_KEY}`)
+            const stripe = await loadStripe("pk_test_51NbvbvSBbRjyQ3wMc28nhLut9skUU8mO3d1OkaAqBq4lKBsXRuNA3gCrKoZqNjkV9BB4aFAu6MQuGro6ZXjFXTG100LF0PH1BJ")
             stripe.redirectToCheckout({sessionId});
             }
           });
@@ -127,8 +128,12 @@ function PlanScreen() {
     Object.entries(products).map(([productId,productData]) =>{
       //TODO add some logic to check if the users subscription is active
       // i.e checking whether the productData.name i.e product plan matches with the role that we had inserted in stripe product metadata as firebase role so we get to know whether its premium or standard blah blah blah
-      const isCurrentPackage = productData.name?.toLowerCase().includes(subscription?.role);
-
+      const isCurrentPackage = productData.name
+      ?.toLowerCase()
+      .includes(subscription?.role);
+      console.log(subscription?.role);
+     
+    
       return (
           <div className={`${isCurrentPackage && 'bg-gray-200'}  flex w-full justify-between p-[20px] opacity-80 hover:opacity-100`} key={productId}>
           <div >
@@ -136,7 +141,7 @@ function PlanScreen() {
             <h6>{productData.description}</h6>
           </div>
 
-          {/* trigger the loadcheckOut only for buttons that are not subscribed, for Currently Subscribed we shuld not loadCheckout since person has already bought it */}
+          {/* trigger the loadcheckOut only for buttons that are not subscribed, for Currently Subscribed we should not loadCheckout since person has already bought it */}
           <button onClick={()=>
             !isCurrentPackage && loadCheckout(productData.prices.priceId)} 
             className={`${isCurrentPackage && 'bg-gray-900'} bg-[#e50914] text-white cursor-pointer pt-[10px] pb-[10px] pl-[20px] pr-[20px]`}>
