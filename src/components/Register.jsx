@@ -76,7 +76,7 @@ function Register() {
         <p className="mt-8 text-xs font-light text-center text-gray-700">
           {" "}
           Already have an account?{" "}
-          <span>
+          <span className="bg-red-600">
            
               <Link to="/" replace>Login</Link>
           

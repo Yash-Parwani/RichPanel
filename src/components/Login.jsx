@@ -68,8 +68,7 @@ function Login() {
 
                 <p className="mt-8 text-xs font-light text-center text-gray-700">
                     {" "}
-                    New to myApp? <span>
-                    
+                    New to myApp? <span className="bg-red-600" >
                         <Link to="register" replace>
                           Sign up
                         </Link>
