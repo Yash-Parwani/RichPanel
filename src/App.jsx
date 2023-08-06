@@ -16,8 +16,8 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Register from "./components/register";
-import Login from "./components/login";
+import Register from "./components/Register";
+import Login from "./components/Login";
 import ProfileScreen from "./components/ProfileScreen";
 const App = () => {
   //fetching the user stored in the redux using useSelector
