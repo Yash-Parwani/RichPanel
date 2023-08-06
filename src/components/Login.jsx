@@ -7,7 +7,7 @@ const Login = () => {
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
     const navigate = useNavigate();
-
+    const goToHome = () => navigate('/');
     const goToRegister = () => navigate('/register');
     const login = (e) =>{
         e.preventDefault();
@@ -16,7 +16,7 @@ const Login = () => {
            emailRef.current.value,
            passwordRef.current.value
         ).then((authUser)=>{
-            
+            goToHome();
           
         }).catch((error) =>{
          alert(error.message);
