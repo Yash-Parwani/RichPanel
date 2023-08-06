@@ -4,9 +4,11 @@ import { selectUser } from '../features/userSlice'
 import {signOut} from 'firebase/auth'
 import { auth } from "../firebase";
 import Plans from './Plans'
-
+import { useNavigate } from 'react-router-dom';
 function ProfileScreen() {
   const user = useSelector(selectUser);
+  const navigate = useNavigate();
+  const goToLogin = () => navigate("/");
     
   return (
     <div className='h-screen bg-blue-600 relative'>
@@ -18,6 +20,7 @@ function ProfileScreen() {
                 .then(()=>{
                     // sign-out successful
                     // once signout is successfull than the onAuthStateChange if say user is signed out and it will than dispatch the logout action that we had making user as null
+                   goToLogin();
                 })
                 .catch(error=>{
                     alert(error.message);
@@ -29,9 +32,9 @@ function ProfileScreen() {
         <div className='bg-white  flex rounded-lg'>
 
             <div className='ml-[25px] w-full'>
-             {(user && user.currSubscription) && <h3>Currently subscribed to {user.currSubscription} plan</h3>}
-              {(!user || !user.currSubscription) && <h3>Plans</h3>}
-             <h2>{user.email}</h2>
+             {(user && user?.currSubscription) && <h3>Currently subscribed to {user?.currSubscription} plan</h3>}
+              {(!user || !user?.currSubscription) && <h3>Plans</h3>}
+             <h2>{user?.email}</h2>
              <div className='mt-[20px] w-full'>
  
 

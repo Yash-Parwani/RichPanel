@@ -1,13 +1,13 @@
 import { useRef } from "react";
 import { auth } from "../firebase";
 import {signInWithEmailAndPassword} from 'firebase/auth'
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const Login = () => {
+function Login() {
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
     const navigate = useNavigate();
-    const goToHome = () => navigate('/');
+    const goToHome = () => navigate('/home');
     const goToRegister = () => navigate('/register');
     const login = (e) =>{
         e.preventDefault();
@@ -69,12 +69,11 @@ const Login = () => {
                 <p className="mt-8 text-xs font-light text-center text-gray-700">
                     {" "}
                     New to myApp? <span>
-                    <button
-                         onClick={goToRegister}
-                        className="font-medium text-blue-600 hover:underline"
-                    >
+                    
+                        <Link to="register" replace>
                           Sign up
-                    </button>
+                        </Link>
+                   
 
                     </span>
                 </p>

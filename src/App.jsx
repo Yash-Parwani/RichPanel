@@ -1,59 +1,63 @@
-import { useEffect,  } from "react"
-import { Login, Register } from "./components"
+import { useEffect } from "react";
+
 import db, { auth } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
-import { login, logout, selectUser, setSubscription } from "./features/userSlice";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-
+import {
+  login,
+  logout,
+  selectUser,
+  setSubscription,
+} from "./features/userSlice";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import Register from "./components/register";
+import Login from "./components/login";
 import ProfileScreen from "./components/ProfileScreen";
 const App = () => {
   //fetching the user stored in the redux using useSelector
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     // its a listener, it listens to any authentication state changed,
     const unsubscribeAuth = onAuthStateChanged(auth, (userAuth) => {
       if (userAuth) {
         // it means that the user is logged in
-       
 
         // so here we will dispatch the login action to set state of user
         //login(payload)
-        var subsStatus =( user )? (user.currSubscription) : (null);
-        if(subsStatus === null){
+        let subsStatus = user ? user.currSubscription : null;
+        if (subsStatus === null) {
           console.log("Inside if for subsStatus having value ", subsStatus);
-          const colRef = collection(db,`customers/${userAuth.uid}/subscriptions`);
-          getDocs(colRef)
-          .then((querySnapshot)=>{
-            querySnapshot.forEach(async (subs) =>{
-                  subsStatus = subs.data().role;
-              })
-              dispatch(
-                setSubscription({
-                  currSubscription : subsStatus
-                })
-              )
-              
+          const colRef = collection(
+            db,
+            `customers/${userAuth.uid}/subscriptions`
+          );
+          getDocs(colRef).then((querySnapshot) => {
+            querySnapshot.forEach(async (subs) => {
+              subsStatus = subs.data().role;
             });
-            
-    
+            dispatch(
+              setSubscription({
+                currSubscription: subsStatus,
+              })
+            );
+          });
         }
-
 
         dispatch(
           login({
             uid: userAuth.uid,
             email: userAuth.email,
-            currSubscription:null
+            currSubscription: null,
           })
         );
-
-
-        
-       
       } else {
         //it means that user is not logged in
 
@@ -78,31 +82,31 @@ const App = () => {
   }, [dispatch]);
 
   return (
+    <div className="app">
+
     <Router>
-    {
-      /*if user is not logged in than show login screen only 
-    otherwise we can show rest of all the screen like home screen ,etc */
-      !user ? (
-        <Register/>
-      ) : (
-       
-
       
-        <Routes>
-          
-          <Route exact path="/" element={<ProfileScreen />} />
-           <Route exact path = "/login" element = {<Login />} />
-           <Route exact path = "/register" element = {<Register />}/> 
-        </Routes>
+      
+      
+         
+
+        
+          <Routes>
+            <Route exact path="/" element={<Login/>} />
+            <Route exact path="/home" element={<ProfileScreen />} />
+            <Route exact path="/register" element={<Register />} />
+
+          </Routes>
+
+  
 
 
 
-
-
-      )
-    }
-  </Router>
-  )
+        
+      
+    </Router>
+  </div>
+);
 }
 
-export default App
+export default App;

@@ -16,7 +16,7 @@ function PlanScreen() {
     const [subscription, setSubscription] = useState(null);
 
     useEffect(()=>{
-      const colRef = collection(db,`customers/${user.uid}/subscriptions`);
+      const colRef = collection(db,`customers/${user?.uid}/subscriptions`);
       
       getDocs(colRef)
       .then((querySnapshot)=>{
@@ -31,7 +31,7 @@ function PlanScreen() {
         })
       })
 
-    },[user.uid])// this useEffect is dependent on user.uid since we want this function to be kicked in for every user
+    },[user?.uid])// this useEffect is dependent on user.uid since we want this function to be kicked in for every user
 
     //getting products from db using useEffect
 
@@ -84,8 +84,8 @@ function PlanScreen() {
 
        const checkoutDoc = await addDoc(checkoutRef,{
         price:priceId,
-        success_url:window.location.origin,
-        cancel_url:window.location.origin
+        success_url:"http://localhost:5173/home",
+        cancel_url:"http://localhost:5173/home"
        })
 
 
