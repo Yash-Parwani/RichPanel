@@ -84,8 +84,8 @@ function PlanScreen() {
 
        const checkoutDoc = await addDoc(checkoutRef,{
         price:priceId,
-        success_url:"https://richpanel-stripe-yash-parwani.vercel.app/home",
-        cancel_url:"https://richpanel-stripe-yash-parwani.vercel.app/home"
+        success_url:window.location.origin,
+        cancel_url:window.location.origin
        })
 
 
