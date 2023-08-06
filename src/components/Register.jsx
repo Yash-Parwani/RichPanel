@@ -1,10 +1,13 @@
 import { useRef } from "react";
 import { auth } from "../firebase";
 import {createUserWithEmailAndPassword} from 'firebase/auth'
+import { useNavigate } from "react-router-dom";
 const Register = () => {
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
-    
+    const navigate = useNavigate();
+    const goToLogin = () => navigate('/login');
+    const goToHome = () => navigate('/');
     const register = (e) =>{
            e.preventDefault();
            createUserWithEmailAndPassword(
@@ -12,6 +15,7 @@ const Register = () => {
               emailRef.current.value,
               passwordRef.current.value
            ).then((authUser)=>{
+             goToHome();
              
            }).catch((error) =>{
             alert(error.message);
@@ -25,18 +29,7 @@ const Register = () => {
                    Create Account
                 </h1>
                 <form className="mt-6">
-                    <div className="mb-2">
-                        <label
-                            htmlFor="name"
-                            className="block text-sm font-semibold text-gray-800" id="name"
-                        >
-                            Name
-                        </label>
-                        <input
-                            type="text"
-                            className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                        />
-                    </div>
+                   
                     <div className="mb-2">
                         <label
                             htmlFor="email"
@@ -79,12 +72,12 @@ const Register = () => {
                 <p className="mt-8 text-xs font-light text-center text-gray-700">
                     {" "}
                     Already have an account? <span>
-                    <a
-                        href="#"
+                    <button
+                        onClick={goToLogin}
                         className="font-medium text-blue-600 hover:underline"
                     >
                           Login
-                    </a>
+                    </button>
 
                     </span>
                 </p>
